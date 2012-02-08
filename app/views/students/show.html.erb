@@ -1,0 +1,21 @@
+<% title "Student" %>
+<p>
+  <strong>you are logged in as:</strong>
+  <%= current_user.username  %>
+</p>
+
+<h3>
+  Registered courses for: <%=@student.name%>
+</h3>
+
+<%@student.courses.each do |course|%>
+  <table>
+    <td><%=  course.name %></td>
+  <%end%>
+</table>
+<p>
+  <%= link_to "Assign", assign_course_student_path(@student) %>
+  <%= link_to "Edit", edit_student_path(@student) %> |
+  <%= link_to "Destroy", @student, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", students_path %>
+</p>
