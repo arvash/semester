@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  
+  before_filter :check ,:except=>[:index, :show, :new, :create]
   def index
     @courses = Course.all
   end
@@ -14,6 +14,7 @@ class CoursesController < ApplicationController
 
   def create
     @course = Course.new(params[:course])
+    @course.user_id=current_user.id
     if @course.save
       redirect_to @course, :notice => "Successfully created course."
     else
@@ -27,6 +28,7 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find(params[:id])
+    @course.user_id=current_user.id
     if @course.update_attributes(params[:course])
       redirect_to @course, :notice  => "Successfully updated course."
     else
@@ -39,4 +41,14 @@ class CoursesController < ApplicationController
     @course.destroy
     redirect_to courses_url, :notice => "Successfully destroyed course."
   end
+  private
+  def check
+    @course = Course.find(params[:id])
+    if @course.user_id != current_user.id
+      redirect_to courses_path, flash.now[:alert] = "You cant perform that action."
+      
+    end
+  end
+
+
 end

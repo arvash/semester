@@ -1,26 +1,30 @@
 <% title "Students" %>
 <p>
-<strong>you are logged in as:</strong>
-<%= current_user.username  %>
+  <strong>you are logged in as:</strong>
+  <%= current_user.username  %>
 </p>
 
 
 <table>
   <tr>
     <th>Name</th>
+    <th>Age</th>
   </tr>
   <% for student in @students %>
     <tr>
       <td><%= student.name %></td>
       <td><%= student.age %></td>
       <td><%= link_to "Show", student %></td>
-      <td><%= link_to "Assign", assign_course_student_path(student) %></td>
-      <td><%= link_to "Edit", edit_student_path(student) %></td>
-      <td><%= link_to "Destroy", student, :confirm => 'Are you sure?', :method => :delete %></td>
+      <%if student.user_id==current_user.id%>
+        <td><%= link_to "Assign", assign_course_student_path(student) %></td>
+        <td><%= link_to "Edit", edit_student_path(student) %></td>
+        <td><%= link_to "Destroy", student, :confirm => 'Are you sure?', :method => :delete %></td>
+      <%end%>
     </tr>
   <% end %>
 </table>
 
-<p><%= link_to "Add Student", new_student_path %></p>
+<p><%= link_to "Add Student", new_student_path %> <p><%= link_to "Add Course", new_course_path %></p>
+</p>
 <%= link_to "Logout", logout_path%>
 <%= link_to "Update profile", edit_current_user_path%>
