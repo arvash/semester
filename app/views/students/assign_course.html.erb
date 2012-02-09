@@ -1,7 +1,7 @@
-<%= form_for(@student) do |f| %>
+<%= form_for :student, :url=> save_course_student_path(params[:id]) do |f| %>
 
   <% title "Student"%>
-  <p>
+    <p>
     <strong>Name:</strong>
     <%= @student.name %>
   </p>
@@ -17,6 +17,6 @@
       </div>
     <%end%>
   <%end%>
-  <p><%= f.submit %></p>
-
+  <p><%= f.submit%></p>
+  <%= link_to "Back", student_path %>
 <% end %>

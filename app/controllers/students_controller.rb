@@ -27,7 +27,6 @@ class StudentsController < ApplicationController
   end
   
   def update
-    params[:student][:course_ids] ||= []
     @student = Student.find(params[:id])
     @student.user_id=current_user.id
     if @student.update_attributes(params[:student])
@@ -36,13 +35,20 @@ class StudentsController < ApplicationController
       render :action => 'edit'
     end
   end
+
   def assign_course
-    
     @student = Student.find(params[:id])
-    @student.course_ids.each do |var|
-      @courses_student= CoursesStudent.new
-      @courses_student.student_id = @student.id
-      @courses_student.course_id = var
+  end
+
+  def save_course
+    @student = Student.find(params[:id])
+    if params[:student].blank?
+      @student.courses=[]
+      @student.update_attributes(params[:student])
+      redirect_to assign_course_student_path, :notice => "Enter at least one course"
+    else
+      @student.update_attributes(params[:student])
+      redirect_to student_path
     end
   end
 
@@ -55,9 +61,10 @@ class StudentsController < ApplicationController
   def check
     @student = Student.find(params[:id])
     if @student.user_id != current_user.id
-      #flash.now[:alert] = "You Cant perform that action."
+      flash.now[:alert] = "You Cant perform that action."
       redirect_to students_path, :notice  => "You Cant perform that action."
       
     end
   end
+
 end

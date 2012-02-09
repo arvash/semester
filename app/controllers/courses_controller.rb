@@ -45,7 +45,8 @@ class CoursesController < ApplicationController
   def check
     @course = Course.find(params[:id])
     if @course.user_id != current_user.id
-      redirect_to courses_path, flash.now[:alert] = "You cant perform that action."
+      redirect_to courses_path,
+      flash.now[:alert] = "You cant perform that action."
       
     end
   end
